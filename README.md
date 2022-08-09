@@ -46,7 +46,7 @@ $ npm install
 Run development server
 
 ```bash
-$ npm run dev
+$ npm start
 ```
 
 Open Chrome or FireFox : **localhost:3000**
