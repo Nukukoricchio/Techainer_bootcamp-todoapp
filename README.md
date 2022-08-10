@@ -21,7 +21,7 @@ $ pip install -r requirements.txt
 Create database:
 
 ```bash
-$ python manage.py makemigrations 
+$ python manage.py makemigrations todo
 $ python manage.py migrate
 ```
 
