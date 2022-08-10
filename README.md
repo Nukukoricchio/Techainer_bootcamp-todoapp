@@ -32,7 +32,7 @@ Run development server
 $ python manage.py runserver
 ```
 
-Open Chrome or FireFox : **127.0.0.1:8000**
+Open Chrome or FireFox : **127.0.0.1:8000/admin**
 
 
 ## ReactJs Setting
