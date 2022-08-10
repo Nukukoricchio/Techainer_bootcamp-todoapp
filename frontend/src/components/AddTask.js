@@ -1,22 +1,24 @@
 import { useState } from "react"
 
 const AddTask = ({ onAdd }) => {
-  const [text, setText] = useState("");
-  const [day, setDay] = useState("");
-  const [reminder, setReminder] = useState(false)
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState("");
+  const [reminder, setReminder] = useState(false);
+  const [image, setImage] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!text) {
+    if (!title) {
       alert("Please enter a text");
       return 
     }
 
-    onAdd({ text, day, reminder });
+    onAdd({ title, time, reminder, image });
 
-    setText("")
-    setDay("")
+    setTitle("")
+    setTime("")
     setReminder(false)
+    setImage("")
   }
 
   return (
@@ -26,16 +28,24 @@ const AddTask = ({ onAdd }) => {
         <input
           type='text'
           placeholder="Add Task"
-          value={text}
-          onChange={(e) => setText(e.target.value)}/>
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}/>
       </div>
       <div className='form-control'>
         <label>Time</label>
         <input
           type='text' 
           placeholder="Add Time"
-          value={day}
-          onChange={(e) => setDay(e.target.value)}/>
+          value={time}
+          onChange={(e) => setTime(e.target.value)}/>
+      </div>
+      <div className='form-control'>
+        <label>Image</label>
+        <input
+          type='file' 
+          accept="image/*"
+          value={""}
+          onChange={(e) => setImage(e.target.files[0])}/>
       </div>
       <div className='form-control form-control-check'>
         <label>Set reminder</label>

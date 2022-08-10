@@ -1,49 +1,58 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import axios from "axios";
+
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
 import About from "./components/About";
 
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Traing yolov5 2d detection model",
-      time: "20/07/2022 19:30",
-      reminder: true,
-    },
-    {
-      id: 2,
-      text: "Traing yolov5 2d detection model",
-      time: "20/07/2022 19:30",
-      reminder: true,
-    },
-    {
-      id: 3,
-      text: "Traing yolov5 2d detection model",
-      time: "20/07/2022 19:30",
-      reminder: true,
-    },
-    {
-      id: 4,
-      text: "Traing yolov5 2d detection model",
-      time: "20/07/2022 19:30",
-      reminder: true,
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  const getTasks = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/todo/");
+      setTasks(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getTasks()
+  }, []);
 
   // Add task
-  const addTask = (task) => {
-    const id = Math.floor(Math.random() * 10000) + 1;
-    const newTask = { id, ...task };
-    setTasks([...tasks, newTask]);
+  const addTask = async (task) => {
+    let formData = new FormData();
+
+    formData.append("title", task.title);
+    formData.append("time", task.time);
+    formData.append("reminder", task.reminder);
+    if (task.image) {
+      formData.append("image", task.image);
+    }
+
+    try {
+      await axios.post("http://127.0.0.1:8000/api/todo/", formData);
+      await getTasks();
+    } catch (error) {
+      alert(error)
+    }
   };
 
   // Delete task
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const deleteTask = async (id) => {
+    try {
+      const response = await axios.delete(`http://127.0.0.1:8000/api/todo/${id}`);
+      // Call API to refresh tasks
+      // await getTasks();
+      setTasks(tasks.filter((t) => t.id !== id))
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   // Toggle reminder
